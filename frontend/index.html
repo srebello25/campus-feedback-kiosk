@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Campus Feedback Kiosk</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top left, #1d4ed8, #020617);
+      color: #0f172a;
+    }
+    .card {
+      background: #f9fafb;
+      border-radius: 24px;
+      padding: 26px 28px 22px;
+      width: 420px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .card-eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-align: center;
+      color: #6b7280;
+      font-weight: 600;
+      margin-bottom: -6px;
+    }
+    .card-title {
+      font-size: 22px;
+      text-align: center;
+      margin: 0;
+      font-weight: 650;
+      color: #111827;
+    }
+    .card-subtitle {
+      font-size: 13px;
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+      display: block;
+      margin-bottom: 4px;
+    }
+    textarea {
+      width: 100%;
+      border-radius: 16px;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      resize: vertical;
+      min-height: 110px;
+      outline: none;
+    }
+    textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.35);
+    }
+    select {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 8px 10px;
+      font-size: 14px;
+      background: white;
+      color: #111827;
+      outline: none;
+    }
+    .btn {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
+      transition: 0.07s ease;
+      margin-top: 6px;
+    }
+    .btn:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px rgba(37, 99, 235, 0.6);
+    }
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.7);
+    }
+    .card-footer {
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
+      margin-top: 4px;
+    }
+    #result {
+      text-align: center;
+      min-height: 18px;
+      font-size: 13px;
+    }
+    .ok { color: #16a34a; }
+    .err { color: #dc2626; }
+  </style>
+</head>
+<body>
+  <section class="card">
+    <div class="card-eyebrow">Regents Campus Feedback Kiosk</div>
+    <h2 class="card-title">Share Your Feedback</h2>
+    <p class="card-subtitle">
+      Your responses are anonymous and help improve our campus.
+    </p>
+
+    <label>Your feedback</label>
+    <textarea id="feedback" placeholder="Type your feedback here..."></textarea>
+
+    <label>Category</label>
+    <select id="category">
+      <option value="Facilities">Facilities</option>
+      <option value="Classroom">Classroom</option>
+      <option value="Canteen">Canteen</option>
+      <option value="Library">Library</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <button class="btn" onclick="submitFeedback()">Submit Feedback</button>
+    <p id="result"></p>
+
+    <p class="card-footer">
+      Please do not include personal details. This kiosk is anonymous.
+    </p>
+  </section>
+
+  <script>
+    const API_URL = "https://wushi4vbqc.execute-api.us-east-1.amazonaws.com/prod/feedback";
+
+    async function submitFeedback() {
+      const text = document.getElementById("feedback").value.trim();
+      const category = document.getElementById("category").value;
+      const result = document.getElementById("result");
+      result.className = "";
+
+      if (!text) {
+        result.textContent = "Please type some feedback.";
+        result.classList.add("err");
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ feedback: text, category })
+        });
+
+        const data = await res.json();
+        result.textContent = data.message || "Feedback submitted successfully.";
+        result.classList.add("ok");
+        document.getElementById("feedback").value = "";
+      } catch (e) {
+        result.textContent = "Error submitting feedback.";
+        result.classList.add("err");
+      }
+    }
+  </script>
+
+</body>
+</html>
