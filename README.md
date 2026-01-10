@@ -16,11 +16,11 @@ frontend/
 ## AWS Services Used
 
 - Amazon S3 (Static hosting for frontend)
-- Amazon API Gateway (REST API endpoints)
+- Amazon API Gateway (HTTP API endpoints for REST-style requests)
 - AWS Lambda (Python backend functions)
 - Amazon DynamoDB (NoSQL database)
 - Amazon CloudWatch (Logging and monitoring)
-- Amazon SNS (Email error notifications)
+- Amazon SNS (Email alerts for Lambda errors)
 - AWS IAM (Access control and permissions)
 
 ## How the System Works
@@ -31,3 +31,4 @@ frontend/
 4. AWS Lambda (submitFeedback) processes the request and stores data in DynamoDB.
 5. Admin opens admin.html to load and filter feedback.
 6. Admin fetches data through API Gateway → Lambda (getFeedback) → DynamoDB.
+
