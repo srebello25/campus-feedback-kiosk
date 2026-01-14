@@ -16,7 +16,7 @@ frontend/
 ## AWS Services Used
 
 - Amazon S3 (Static hosting for frontend)
-- Amazon API Gateway (HTTP API endpoints for REST-style requests)
+- Amazon API Gateway (HTTP API, used to invoke Lambda for POST and GET)
 - AWS Lambda (Python backend functions)
 - Amazon DynamoDB (NoSQL database)
 - Amazon CloudWatch (Logging and monitoring)
