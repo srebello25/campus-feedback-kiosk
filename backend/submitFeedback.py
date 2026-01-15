@@ -3,11 +3,13 @@ import uuid
 import boto3
 from datetime import datetime
 
+# Initialize DynamoDB resource
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('FeedbackTable')  # make sure this name matches your table
 
+# Connect to the table (ensure table name matches DynamoDB table which is deployed)
+table = dynamodb.Table('FeedbackTable')  
 def lambda_handler(event, context):
-    # Common CORS + JSON headers
+    # Common CORS + JSON headers for API Gateway
     headers = {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "Content-Type",
@@ -29,7 +31,8 @@ def lambda_handler(event, context):
     # POST = create new feedback
     if method == "POST":
         body_str = event.get("body") or "{}"
-
+        
+        # Attempt to parse JSON body
         try:
             body = json.loads(body_str)
         except json.JSONDecodeError:
@@ -39,6 +42,7 @@ def lambda_handler(event, context):
                 "body": json.dumps({"message": "Invalid JSON in request body"})
             }
 
+        
         feedback_text = (body.get("feedback") or "").strip()
         category = body.get("category", "Other")
 
