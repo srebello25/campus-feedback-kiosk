@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Admin – Campus Feedback</title>
   <style>
+    /* Basic styling & layout */
     * {
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -229,8 +230,9 @@
 
   <script>
     const API_URL = "https://wushi4vbqc.execute-api.us-east-1.amazonaws.com/prod/feedback";
-    let allItems = [];
-
+    let allItems = []; // stores loaded feedback items
+    
+    // Fetch feedback from API
     async function loadFeedback() {
       const status = document.getElementById("status");
       const tbody = document.getElementById("feedbackBody");
@@ -251,7 +253,7 @@
           status.textContent = `Loaded ${allItems.length} feedback item(s).`;
           status.classList.add("ok");
         }
-        applyFilter();
+        applyFilter(); // update table
       } catch (err) {
         console.error(err);
         status.textContent = "Error loading feedback. Please try again.";
@@ -259,6 +261,7 @@
       }
     }
 
+    // Filter feedback by category and render table
     function applyFilter() {
       const filter = document.getElementById("categoryFilter").value;
       const tbody = document.getElementById("feedbackBody");
@@ -266,7 +269,7 @@
 
       const items = allItems.filter(item => {
         // 🔹 KEY CHANGE: if item.category is missing, treat it as "Other"
-        const cat = item.category || "Other";
+        const cat = item.category || "Other"; // fallback
         if (filter === "All") return true;
         return cat === filter;
       });
@@ -313,3 +316,4 @@
   </script>
 </body>
 </html>
+
