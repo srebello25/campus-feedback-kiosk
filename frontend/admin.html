@@ -268,7 +268,7 @@
       tbody.innerHTML = "";
 
       const items = allItems.filter(item => {
-        // 🔹 KEY CHANGE: if item.category is missing, treat it as "Other"
+        // Treat missing category as "Other"
         const cat = item.category || "Other"; // fallback
         if (filter === "All") return true;
         return cat === filter;
@@ -316,4 +316,5 @@
   </script>
 </body>
 </html>
+
 
