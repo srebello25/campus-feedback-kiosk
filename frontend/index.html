@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Campus Feedback Kiosk</title>
   <style>
+    /* Basic styling & layout */
     * {
       box-sizing: border-box;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -149,6 +150,7 @@
   <script>
     const API_URL = "https://wushi4vbqc.execute-api.us-east-1.amazonaws.com/prod/feedback";
 
+    // Send feedback to backend
     async function submitFeedback() {
       const text = document.getElementById("feedback").value.trim();
       const category = document.getElementById("category").value;
@@ -181,3 +183,4 @@
 
 </body>
 </html>
+
